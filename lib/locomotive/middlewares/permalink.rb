@@ -10,7 +10,27 @@ module Locomotive
         if env['PATH_INFO'] =~ /^#{Locomotive.mounted_on}\/_permalink.json/
           request     = Rack::Request.new(env)
           underscore  = request.params['underscore'] == '1'
-          value       = request.params['string'].try(:permalink, underscore)
+
+          # Fix umlauts
+          value = request.params['string'].gsub(/[äöüÄÖÜ]/) do |match|
+            puts match
+            case match
+              when "ä"
+                'ae'
+              when "ö" 
+                'oe'
+              when "ü" 
+                'ue'
+              when "Ä" 
+                'AE'
+              when "Ö" 
+                'OE'
+              when "Ü" 
+                'UE'
+            end
+          end
+
+          value = value.try(:permalink, underscore)
 
           [200, {}, [{ value: value }.to_json]]
         else
