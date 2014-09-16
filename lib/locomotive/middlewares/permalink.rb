@@ -13,7 +13,6 @@ module Locomotive
 
           # Fix umlauts
           value = request.params['string'].gsub(/[äöüÄÖÜ]/) do |match|
-            puts match
             case match
               when "ä"
                 'ae'
