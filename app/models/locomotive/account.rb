@@ -45,7 +45,7 @@ module Locomotive
     ## methods ##
 
     def sites
-      @sites ||= Site.where('memberships.account_id' => self._id)
+      @sites ||= Site.where('memberships.account_id' => self._id).asc(:name)
     end
 
     # Tell if the account has admin privileges or not.
